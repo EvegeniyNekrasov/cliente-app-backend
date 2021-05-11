@@ -5,44 +5,48 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 // import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
 
-
 @Entity
-@Table(name="cliente")
-public class Cliente implements Serializable{
+@Table(name = "cliente")
+public class Cliente implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(nullable=false)
+
+	@Column(nullable = false)
 	private String nombre;
-	
+
 	private String apellido;
-	
-	@Column(nullable=false, unique=false)
+
+	@Column(nullable = false, unique = false)
 	private String email;
-	
+
 	@NotNull
-	@Column(name="create_at")
+	@Column(name = "create_at")
 	@Temporal(TemporalType.DATE)
 	private Date createAt;
-	
+
 	private String foto;
 	
-	//@PrePersist
-	//public void prePersist() {
-	//	createAt = new Date();
-	//}
+	@NotNull
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "region_id")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	private Region region;
 
 	public Long getId() {
 		return id;
@@ -83,8 +87,7 @@ public class Cliente implements Serializable{
 	public void setCreateAt(Date createAt) {
 		this.createAt = createAt;
 	}
-	
-	
+
 	public String getFoto() {
 		return foto;
 	}
@@ -93,6 +96,13 @@ public class Cliente implements Serializable{
 		this.foto = foto;
 	}
 
+	public Region getRegion() {
+		return region;
+	}
+
+	public void setRegion(Region region) {
+		this.region = region;
+	}
 
 	private static final long serialVersionUID = 1L;
 

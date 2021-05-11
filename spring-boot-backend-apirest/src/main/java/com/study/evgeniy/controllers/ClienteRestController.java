@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.study.evgeniy.models.entity.Cliente;
+import com.study.evgeniy.models.entity.Region;
 import com.study.evgeniy.models.services.IClienteService;
 import com.study.evgeniy.models.services.IUploadFileService;
 
@@ -117,6 +118,8 @@ public class ClienteRestController {
 			clienteActual.setNombre(cliente.getNombre());
 			clienteActual.setEmail(cliente.getEmail());
 			clienteActual.setCreateAt(cliente.getCreateAt());
+			clienteActual.setRegion(cliente.getRegion());
+			
 
 			clienteUpdate = clienteService.save(clienteActual);
 
@@ -207,6 +210,11 @@ public class ClienteRestController {
 				"attachment; filename=\"" + recurso.getFilename() + "\"");
 		
 		return new ResponseEntity<Resource>(recurso, cabecera, HttpStatus.OK);
+	}
+	
+	@GetMapping("clientes/regiones")
+	public List<Region> listarRegiones() {
+		return clienteService.findAllRegioners();
 	}
 
 }
